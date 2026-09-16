@@ -1,0 +1,134 @@
+{
+  "schema_version": "traveler-screen-route-v1",
+  "framework": "nextjs-app-router",
+  "design_reference": {
+    "ui_contract": "design-reference/UI_CONTRACT.md",
+    "design_system": "design-reference/D-001/DESIGN.md",
+    "manifest": "design-reference/DESIGN_MANIFEST.md",
+    "validation_report": "docs/STITCH_VALIDATION_REPORT.md"
+  },
+  "screens": [
+    {
+      "id": "SCR-001",
+      "route": "/",
+      "page_entry": "src/app/page.tsx",
+      "category": "core",
+      "approved_screen_id": "c683c3c0c2554f148b7f9e127ea45b68",
+      "mobile_variant_approved": false,
+      "page_owner_task_required": true,
+      "preview_required": true,
+      "starter_template_forbidden": true
+    },
+    {
+      "id": "SCR-002",
+      "route": "/about",
+      "page_entry": "src/app/about/page.tsx",
+      "category": "support",
+      "approved_screen_id": "8c6d8f1824b44746826b723a3a9e2da9",
+      "mobile_variant_approved": false,
+      "page_owner_task_required": true,
+      "preview_required": true,
+      "starter_template_forbidden": false
+    },
+    {
+      "id": "SCR-003",
+      "route": "/travel-tools",
+      "page_entry": "src/app/travel-tools/page.tsx",
+      "category": "core",
+      "approved_screen_id": "df8effc7ed084a57aa224430247ae2a3",
+      "mobile_variant_approved": false,
+      "page_owner_task_required": true,
+      "preview_required": true,
+      "starter_template_forbidden": false
+    },
+    {
+      "id": "SCR-004",
+      "route": "/mates",
+      "page_entry": "src/app/mates/page.tsx",
+      "category": "core",
+      "approved_screen_id": "a78a54f733e64af4ac6a309b6c3875b2",
+      "mobile_variant_approved": false,
+      "page_owner_task_required": true,
+      "preview_required": true,
+      "starter_template_forbidden": false
+    },
+    {
+      "id": "SCR-005",
+      "route": "/account",
+      "page_entry": "src/app/account/page.tsx",
+      "category": "support",
+      "approved_screen_id": "0b6a9f10d15a43aa859354e73bd1508b",
+      "mobile_variant_approved": false,
+      "page_owner_task_required": true,
+      "preview_required": true,
+      "starter_template_forbidden": false
+    }
+  ],
+  "core_screens": ["SCR-001", "SCR-003", "SCR-004"],
+  "support_screens": ["SCR-002", "SCR-005"],
+  "technical_routes": [
+    {
+      "type": "auth_callback",
+      "route": "/auth/callback",
+      "page_entry": "src/app/auth/callback/route.ts",
+      "note": "Supabase 이메일 인증 콜백 처리. Screen 수에 포함하지 않음."
+    },
+    {
+      "type": "api_route",
+      "route": "/api/mates/[id]/applications",
+      "page_entry": "src/app/api/mates/[id]/applications/route.ts",
+      "note": "참가 요청 생성 API. Screen 수에 포함하지 않음."
+    },
+    {
+      "type": "api_route",
+      "route": "/api/applications/[id]",
+      "page_entry": "src/app/api/applications/[id]/route.ts",
+      "note": "참가 요청 승인/거절 API. Screen 수에 포함하지 않음."
+    },
+    {
+      "type": "api_route",
+      "route": "/api/reports",
+      "page_entry": "src/app/api/reports/route.ts",
+      "note": "신고 접수 API. Screen 수에 포함하지 않음."
+    },
+    {
+      "type": "api_route",
+      "route": "/api/admin/reports/[id]",
+      "page_entry": "src/app/api/admin/reports/[id]/route.ts",
+      "note": "관리자 신고 상태 변경 API. Screen 수에 포함하지 않음."
+    },
+    {
+      "type": "api_route",
+      "route": "/api/admin/settings/outbound",
+      "page_entry": "src/app/api/admin/settings/outbound/route.ts",
+      "note": "관리자 항공·숙소 외부 URL 설정 API. Screen 수에 포함하지 않음."
+    },
+    {
+      "type": "not_found",
+      "route": "*",
+      "page_entry": "src/app/not-found.tsx",
+      "note": "전역 404 처리. Screen 수에 포함하지 않음."
+    }
+  ],
+  "required_navigation": [
+    { "from": "SCR-001", "to": "SCR-003", "trigger": "Hero '항공·숙소 조건 정리하기' CTA" },
+    { "from": "SCR-001", "to": "SCR-004", "trigger": "동행글 섹션 CTA" },
+    { "from": "SCR-001", "to": "SCR-002", "trigger": "대표 소개 섹션 CTA" },
+    { "from": "SCR-001", "to": "SCR-005", "trigger": "Header 로그인" },
+    { "from": "SCR-002", "to": "SCR-001", "trigger": "추천 여행지 카드 클릭 (해당 여행지 Drawer)" },
+    { "from": "SCR-002", "to": "SCR-003", "trigger": "하단 CTA 배너 '여행 도구로 이동'" },
+    { "from": "SCR-002", "to": "SCR-004", "trigger": "하단 CTA 배너 '동행 찾기'" },
+    { "from": "SCR-003", "to": "SCR-004", "trigger": "동행글 작성 완료 후 상세로 이동" },
+    { "from": "SCR-003", "to": "SCR-005", "trigger": "동행 탭 로그인 안내" },
+    { "from": "SCR-004", "to": "SCR-003", "trigger": "'새 동행글 작성' CTA (동행 탭)" },
+    { "from": "SCR-004", "to": "SCR-005", "trigger": "로그인 유도 / 내 활동에서 요청 관리" },
+    { "from": "SCR-005", "to": "SCR-004", "trigger": "내 글·받은 요청 클릭 (해당 글 상세)" },
+    { "from": "SCR-005", "to": "SCR-003", "trigger": "'새 동행글 작성' 바로가기" }
+  ],
+  "completion_checks": {
+    "route_no_duplicates": true,
+    "page_entry_no_duplicates": true,
+    "screen_count": 5,
+    "core_support_split_present": true
+  }
+}
