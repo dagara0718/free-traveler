@@ -188,6 +188,57 @@ def topological_order(task_ids, deps):
     return order
 
 
+def run_check_mode(waves):
+    """Read-only Wave 계약 검사: recompute Wave assignment in memory and
+    compare against the committed TASKS/WAVE_PLAN.md / WAVE_STATE.json /
+    TASK_MANIFEST.csv wave_id column. Never writes any file — status/
+    checkpoint_result in WAVE_STATE.json are live progress data owned by
+    /run-wave, not something a validate/ci run may reset.
+    """
+    mismatches = []
+
+    if not WAVE_STATE_PATH.is_file():
+        fail([f"{WAVE_STATE_PATH} 없음 — 먼저 `python scripts/build_waves.py`를 실행해야 함"])
+    existing_state = json.loads(WAVE_STATE_PATH.read_text(encoding="utf-8"))
+    existing_waves = {w["wave_id"]: w for w in existing_state.get("waves", [])}
+
+    if set(existing_waves.keys()) != {w["wave_id"] for w in waves}:
+        mismatches.append(
+            f"Wave ID 집합 불일치: 기록됨={sorted(existing_waves.keys())} 재계산={sorted(w['wave_id'] for w in waves)}"
+        )
+    else:
+        for w in waves:
+            recorded = existing_waves[w["wave_id"]]
+            if recorded.get("task_ids") != w["task_ids"]:
+                mismatches.append(
+                    f"{w['wave_id']} task_ids 불일치: 기록됨={recorded.get('task_ids')} 재계산={w['task_ids']}"
+                )
+            if recorded.get("title") != w["title"]:
+                mismatches.append(f"{w['wave_id']} title 불일치: 기록됨={recorded.get('title')!r} 재계산={w['title']!r}")
+            if bool(recorded.get("checkpoint_required")) != w["checkpoint_required"]:
+                mismatches.append(f"{w['wave_id']} checkpoint_required 불일치")
+
+    if MANIFEST_PATH.is_file():
+        with open(MANIFEST_PATH, newline="", encoding="utf-8") as f:
+            manifest_rows = list(csv.DictReader(f))
+        wave_of_task = {}
+        for w in waves:
+            for tid in w["task_ids"]:
+                wave_of_task[tid] = w["wave_id"]
+        for r in manifest_rows:
+            tid = r.get("Task ID")
+            recorded_wave = r.get("wave_id", "")
+            expected_wave = wave_of_task.get(tid, "")
+            if recorded_wave != expected_wave:
+                mismatches.append(f"TASK_MANIFEST.csv {tid} wave_id 불일치: 기록됨={recorded_wave!r} 재계산={expected_wave!r}")
+
+    if mismatches:
+        fail(mismatches, "Wave 계약 검사 불일치:")
+
+    print(f"Wave 총수: {len(waves)} (기록값과 일치)")
+    print("BUILD_WAVES_CHECK_PASS")
+
+
 def main():
     if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
         sys.stdout.reconfigure(encoding="utf-8")
@@ -307,6 +358,10 @@ def main():
         w["checkpoint_required"] = any(
             category_by_id.get(tid, "") == "PAGE_OWNER" for tid in w["task_ids"]
         )
+
+    if "--check" in sys.argv[1:]:
+        run_check_mode(waves)
+        return
 
     # --- Write TASKS/TASK_DAG.md ---
     dag_lines = ["# Free Traveler — Task Dependency DAG", ""]

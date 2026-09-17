@@ -12,9 +12,16 @@
         "COMPONENT-SHELL-HEADER-FOOTER",
         "COMPONENT-ERROR-STATES"
       ],
-      "status": "pending",
+      "status": "completed",
       "checkpoint_required": false,
-      "checkpoint_result": null
+      "checkpoint_result": null,
+      "tasks": {
+        "COMPONENT-FAVORITES-LOCALSTORAGE": "done",
+        "COMPONENT-SEO-METADATA": "done",
+        "COMPONENT-SHARE-BUTTON": "done",
+        "COMPONENT-SHELL-HEADER-FOOTER": "done",
+        "COMPONENT-ERROR-STATES": "done"
+      }
     },
     {
       "wave_id": "W02",

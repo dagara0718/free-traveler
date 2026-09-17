@@ -375,13 +375,23 @@ def main() -> int:
     record(18, "EXCLUDED 상세 구현 파일이 생성되지 않음", not d18, d18)
 
     # ---- write TASK_MANIFEST.csv ----
+    # Preserve wave_id from a previous scripts/build_waves.py run — this script
+    # only re-derives audit columns, it must not silently erase Wave assignment.
+    previous_wave_id = {}
+    if MANIFEST_PATH.is_file():
+        with MANIFEST_PATH.open(newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                wid = row.get("wave_id", "")
+                if wid:
+                    previous_wave_id[row["Task ID"]] = wid
+
     TASKS_DIR.mkdir(parents=True, exist_ok=True)
     with MANIFEST_PATH.open("w", encoding="utf-8", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([
             "Seq", "Task ID", "Title", "Category", "Implementation Status",
             "Screen", "Route", "Page Entry", "Depends On", "Requirement Count",
-            "Priority", "Detail File Exists",
+            "Priority", "Detail File Exists", "wave_id",
         ])
         for t in tasks:
             writer.writerow([
@@ -389,6 +399,7 @@ def main() -> int:
                 t["screen"], t["route"], t["page_entry"], "; ".join(t["depends"]),
                 len(t["requirements"]), t["priority"],
                 "YES" if t["id"] in detail_ids else "NO",
+                previous_wave_id.get(t["id"], ""),
             ])
 
     # ---- write TASK_AUDIT_REPORT.md ----
