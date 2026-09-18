@@ -60,15 +60,19 @@ test.describe("E2E-003 항공 외부 이동 안내", () => {
     await page.goto("/travel-tools");
 
     await page.getByRole("tab", { name: "항공편" }).click();
-    await page.getByLabel("국가").fill("일본");
-    await page.getByLabel("지역").fill("도쿄");
-    await page.getByLabel("출발일").fill("2027-01-10");
-    await page.getByLabel("귀국일").fill("2027-01-15");
+    // 3개 Tab 패널이 상태 보존을 위해 항상 DOM에 마운트되어 있으므로
+    // (COMPONENT-SC003-TABS-SHELL), 보이는 패널로 locator를 좁힌다.
+    const flightPanel = page.locator('[role="tabpanel"]:not([hidden])');
+    await flightPanel.getByLabel("국가").fill("일본");
+    await flightPanel.getByLabel("지역").fill("도쿄");
+    await flightPanel.getByLabel("출발일").fill("2027-01-10");
+    await flightPanel.getByLabel("귀국일").fill("2027-01-15");
     await page.getByTestId("flight-form-submit").click();
 
     // REQ-FUNC-015 고정 문구 — 입력값이 서버로 전달되지 않는다는 고지.
+    // 페이지 하단 Tip 안내문에도 같은 문구 접두사가 있어, 요약 카드 쪽만 특정한다.
     await expect(
-      page.getByText("입력값은 외부로 전달되지 않습니다"),
+      page.getByText("입력값은 외부로 전달되지 않습니다. 조건 확인 후"),
     ).toBeVisible();
 
     const externalLink = page.getByTestId("flight-external-link");
@@ -87,14 +91,15 @@ test.describe("E2E-004 숙소 외부 이동 안내", () => {
     await page.goto("/travel-tools");
 
     await page.getByRole("tab", { name: "숙소" }).click();
-    await page.getByLabel("국가").fill("일본");
-    await page.getByLabel("지역").fill("오사카");
-    await page.getByLabel("체크인").fill("2027-01-10");
-    await page.getByLabel("체크아웃").fill("2027-01-12");
+    const hotelPanel = page.locator('[role="tabpanel"]:not([hidden])');
+    await hotelPanel.getByLabel("국가").fill("일본");
+    await hotelPanel.getByLabel("지역").fill("오사카");
+    await hotelPanel.getByLabel("체크인").fill("2027-01-10");
+    await hotelPanel.getByLabel("체크아웃").fill("2027-01-12");
     await page.getByTestId("hotel-form-submit").click();
 
     await expect(
-      page.getByText("입력값은 외부로 전달되지 않습니다"),
+      page.getByText("입력값은 외부로 전달되지 않습니다. 조건 확인 후"),
     ).toBeVisible();
 
     const externalLink = page.getByTestId("hotel-external-link");
@@ -114,7 +119,9 @@ test.describe("E2E-005 비로그인 동행글 작성 로그인 안내", () => {
     await page.getByRole("tab", { name: "동행 구하기" }).click();
 
     // SCREEN_ROUTE_CONTRACT.json required_navigation: SCR-003 -> SCR-005 "동행 탭 로그인 안내".
-    const loginPrompt = page.getByRole("link", { name: /로그인/ });
+    // Header에도 "로그인" 링크가 있으므로 활성 Tab 패널 안에서만 찾는다.
+    const matePanel = page.locator('[role="tabpanel"]:not([hidden])');
+    const loginPrompt = matePanel.getByRole("link", { name: /로그인/ });
     await expect(loginPrompt).toBeVisible();
     await expect(loginPrompt).toHaveAttribute("href", "/account");
 

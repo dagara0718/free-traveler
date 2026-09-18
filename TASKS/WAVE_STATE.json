@@ -32,9 +32,15 @@
         "DATA-REPRESENTATIVE",
         "DATA-SAFETY"
       ],
-      "status": "pending",
+      "status": "completed",
       "checkpoint_required": false,
-      "checkpoint_result": null
+      "checkpoint_result": null,
+      "tasks": {
+        "DATA-DESTINATIONS": "done",
+        "DATA-POLICY-CONTENT": "done",
+        "DATA-REPRESENTATIVE": "done",
+        "DATA-SAFETY": "done"
+      }
     },
     {
       "wave_id": "W03",
@@ -46,9 +52,16 @@
         "DB-ACCESS",
         "DB-SEED-BASE"
       ],
-      "status": "pending",
+      "status": "completed",
       "checkpoint_required": false,
-      "checkpoint_result": null
+      "checkpoint_result": null,
+      "tasks": {
+        "DB-SCHEMA-BASE": "done",
+        "API-AUTH": "done",
+        "DB-RLS-BASE": "done",
+        "DB-ACCESS": "done",
+        "DB-SEED-BASE": "done"
+      }
     },
     {
       "wave_id": "W04",
@@ -62,9 +75,18 @@
         "COMPONENT-SC001-MATE-TEASER",
         "PAGE-SCR001"
       ],
-      "status": "pending",
+      "status": "completed",
       "checkpoint_required": true,
-      "checkpoint_result": null
+      "checkpoint_result": "사용자가 대화에서 명시적으로 확인함(2026-09-18, /run-wave W04 --resume)",
+      "tasks": {
+        "COMPONENT-SC001-DESTINATION-GRID": "done",
+        "COMPONENT-SC001-HERO-SEARCH": "done",
+        "COMPONENT-SC001-ABOUT-TEASER": "done",
+        "COMPONENT-SC001-DRAWER-SHELL": "done",
+        "API-MATES-READ": "done",
+        "COMPONENT-SC001-MATE-TEASER": "done",
+        "PAGE-SCR001": "done"
+      }
     },
     {
       "wave_id": "W05",
@@ -77,9 +99,17 @@
         "COMPONENT-SC002-TIMELINE",
         "PAGE-SCR002"
       ],
-      "status": "pending",
+      "status": "completed",
       "checkpoint_required": true,
-      "checkpoint_result": null
+      "checkpoint_result": "사용자가 대화에서 명시적으로 확인함(2026-09-18, /run-wave W05 --resume)",
+      "tasks": {
+        "COMPONENT-SC002-COUNTRY-CHIPS": "done",
+        "COMPONENT-SC002-GALLERY": "done",
+        "COMPONENT-SC002-PICKS-CTA": "done",
+        "COMPONENT-SC002-PROFILE-HERO-STATS": "done",
+        "COMPONENT-SC002-TIMELINE": "done",
+        "PAGE-SCR002": "done"
+      }
     },
     {
       "wave_id": "W06",
@@ -92,9 +122,17 @@
         "COMPONENT-SC003-MATE-WRITE",
         "PAGE-SCR003"
       ],
-      "status": "pending",
+      "status": "completed",
       "checkpoint_required": true,
-      "checkpoint_result": null
+      "checkpoint_result": "사용자가 대화에서 명시적으로 확인함(2026-09-18, /run-wave W06 --resume)",
+      "tasks": {
+        "COMPONENT-SC003-TABS-SHELL": "done",
+        "COMPONENT-SC003-FLIGHT-FORM": "done",
+        "COMPONENT-SC003-HOTEL-FORM": "done",
+        "API-MATES-WRITE": "done",
+        "COMPONENT-SC003-MATE-WRITE": "done",
+        "PAGE-SCR003": "done"
+      }
     },
     {
       "wave_id": "W07",
@@ -106,9 +144,16 @@
         "API-APPLICATIONS",
         "API-BLOCKS"
       ],
-      "status": "pending",
+      "status": "completed",
       "checkpoint_required": false,
-      "checkpoint_result": null
+      "checkpoint_result": null,
+      "tasks": {
+        "COMPONENT-SC004-DETAIL-PANEL": "done",
+        "COMPONENT-SC004-FILTER-BAR": "done",
+        "COMPONENT-SC004-LIST": "done",
+        "API-APPLICATIONS": "done",
+        "API-BLOCKS": "done"
+      }
     },
     {
       "wave_id": "W08",
@@ -119,9 +164,15 @@
         "COMPONENT-SC004-REPORT-BLOCK",
         "PAGE-SCR004"
       ],
-      "status": "pending",
+      "status": "completed",
       "checkpoint_required": true,
-      "checkpoint_result": null
+      "checkpoint_result": "사용자가 대화에서 명시적으로 확인함(2026-09-18, /run-wave W08 --resume)",
+      "tasks": {
+        "API-REPORTS": "done",
+        "COMPONENT-SC004-APPLY-FLOW": "done",
+        "COMPONENT-SC004-REPORT-BLOCK": "done",
+        "PAGE-SCR004": "done"
+      }
     },
     {
       "wave_id": "W09",
@@ -135,9 +186,18 @@
         "COMPONENT-SC005-MY-ACTIVITY",
         "PAGE-SCR005"
       ],
-      "status": "pending",
+      "status": "completed",
       "checkpoint_required": true,
-      "checkpoint_result": null
+      "checkpoint_result": "사용자가 대화에서 명시적으로 확인함(2026-09-18, /run-wave W09 --resume)",
+      "tasks": {
+        "COMPONENT-SC005-AUTH": "done",
+        "COMPONENT-SC005-PROFILE": "done",
+        "API-ACCOUNT-DELETE": "done",
+        "API-ADMIN-SETTINGS": "done",
+        "COMPONENT-SC005-ADMIN": "done",
+        "COMPONENT-SC005-MY-ACTIVITY": "done",
+        "PAGE-SCR005": "done"
+      }
     },
     {
       "wave_id": "W10",
@@ -150,9 +210,17 @@
         "MANUAL-CHECK-ACCESSIBILITY",
         "MANUAL-CHECK-RESPONSIVE-DENSITY"
       ],
-      "status": "pending",
+      "status": "completed",
       "checkpoint_required": false,
-      "checkpoint_result": null
+      "checkpoint_result": null,
+      "tasks": {
+        "E2E-PUBLIC-SMOKE": "done",
+        "E2E-TRAVEL-TOOLS": "done",
+        "MANUAL-CHECK-EXTERNAL-LINKS": "done",
+        "E2E-MATE-AUTH": "done",
+        "MANUAL-CHECK-ACCESSIBILITY": "done",
+        "MANUAL-CHECK-RESPONSIVE-DENSITY": "done"
+      }
     },
     {
       "wave_id": "W11",
@@ -164,9 +232,16 @@
         "UNIT-TRAVEL-DATES",
         "OPS-CI-PIPELINE"
       ],
-      "status": "pending",
+      "status": "completed",
       "checkpoint_required": false,
-      "checkpoint_result": null
+      "checkpoint_result": null,
+      "tasks": {
+        "TEST-RLS-BASIC": "done",
+        "UNIT-CONTACT-DETECTION": "done",
+        "UNIT-MATE-STATE": "done",
+        "UNIT-TRAVEL-DATES": "done",
+        "OPS-CI-PIPELINE": "done"
+      }
     },
     {
       "wave_id": "W12",
@@ -174,9 +249,12 @@
       "task_ids": [
         "OPS-VERCEL-SUPABASE-CHECK"
       ],
-      "status": "pending",
+      "status": "completed",
       "checkpoint_required": false,
-      "checkpoint_result": null
+      "checkpoint_result": null,
+      "tasks": {
+        "OPS-VERCEL-SUPABASE-CHECK": "done"
+      }
     }
   ]
 }

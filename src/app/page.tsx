@@ -1,69 +1,94 @@
-import Image from "next/image";
+import { HeroSearch } from "@/components/home/HeroSearch";
+import { DestinationGrid } from "@/components/home/DestinationGrid";
+import { MateTeaser } from "@/components/home/MateTeaser";
+import { AboutTeaser } from "@/components/home/AboutTeaser";
+import { DetailDrawer } from "@/components/drawer/DetailDrawer";
+import { DestinationDetail } from "@/components/drawer/DestinationDetail";
+import { SafetyDetail } from "@/components/drawer/SafetyDetail";
+import { destinations } from "@/data/destinations";
+import { safetyByCountry } from "@/data/safety";
+import Link from "next/link";
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
+  const drawer = typeof params.drawer === "string" ? params.drawer : undefined;
+  const id = typeof params.id === "string" ? params.id : undefined;
+
+  const closeParams = new URLSearchParams();
+  if (typeof params.q === "string") closeParams.set("q", params.q);
+  if (typeof params.theme === "string") closeParams.set("theme", params.theme);
+  const closeQuery = closeParams.toString();
+  const closeHref = closeQuery ? `/?${closeQuery}` : "/";
+
+  const selectedDestination =
+    drawer === "destination" && id
+      ? destinations.find((d) => d.id === id)
+      : undefined;
+  const selectedSafety =
+    drawer === "safety" && id
+      ? safetyByCountry.find((s) => s.countryCode === id)
+      : undefined;
+
+  const featuredSafety = safetyByCountry.slice(0, 6);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-16 px-4 py-8 md:px-8 md:py-16">
+      <HeroSearch />
+
+      <DestinationGrid />
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-2xl font-bold text-[#1F2328]">국가별 주의사항</h2>
+        <p className="text-base text-[#42474F]">
+          출국 전 최신 안전정보를 확인하세요. 최종 확인일이 7일을 넘으면 재확인
+          경고가 표시됩니다.
+        </p>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {featuredSafety.map((safety) => (
+            <Link
+              key={safety.countryCode}
+              href={`/?drawer=safety&id=${safety.countryCode}`}
+              className="flex flex-col gap-2 rounded-xl border border-[#E4E4E7] bg-white p-4"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <h3 className="text-base font-semibold text-[#1F2328]">
+                {safety.countryName}
+              </h3>
+              <p className="text-sm text-[#42474F]">{safety.alertLevel}</p>
+              <p className="text-xs text-[#6B7280]">
+                최종 확인일 {safety.lastVerifiedAt}
+              </p>
+            </Link>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
+
+      <MateTeaser />
+
+      <AboutTeaser />
+
+      {selectedDestination && (
+        <DetailDrawer
+          open
+          closeHref={closeHref}
+          title={selectedDestination.name}
+        >
+          <DestinationDetail destination={selectedDestination} />
+        </DetailDrawer>
+      )}
+
+      {selectedSafety && (
+        <DetailDrawer
+          open
+          closeHref={closeHref}
+          title={`${selectedSafety.countryName} 안전정보`}
+        >
+          <SafetyDetail safety={selectedSafety} />
+        </DetailDrawer>
+      )}
     </div>
   );
 }
